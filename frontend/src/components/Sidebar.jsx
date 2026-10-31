@@ -12,7 +12,7 @@ export default function Sidebar({ enginePanelOpen, onEngineClick }) {
           onClick={onEngineClick}
           aria-expanded={enginePanelOpen}
           aria-controls="engine-panel"
-      
+        >
           <svg
             width="22"
             height="22"

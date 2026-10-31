@@ -1,6 +1,6 @@
 import "./Sidebar.css";
 
-export default function Sidebar() {
+export default function Sidebar({ enginePanelOpen, onEngineClick }) {
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">SPACE EXPLORER</div>
@@ -8,9 +8,11 @@ export default function Sidebar() {
       <nav aria-label="Main navigation">
         <button
           type="button"
-          className="sidebar-option active"
-          aria-current="page"
-        >
+          className={`sidebar-option ${enginePanelOpen ? "active" : ""}`}
+          onClick={onEngineClick}
+          aria-expanded={enginePanelOpen}
+          aria-controls="engine-panel"
+      
           <svg
             width="22"
             height="22"

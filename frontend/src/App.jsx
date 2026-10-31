@@ -1,7 +1,9 @@
 import { Canvas } from "@react-three/fiber";
 import { Grid, OrbitControls } from "@react-three/drei";
-import Sidebar from "./components/Sidebar";
 import "./App.css";
+import { useState } from "react";
+import Sidebar from "./components/Sidebar";
+import EnginePanel from "./components/EnginePanel";
 
 function Workspace() {
   return (
@@ -29,8 +31,8 @@ function Workspace() {
         sectionSize={5}
         sectionThickness={1}
         
-        cellColor="#1A2230"
-        sectionColor="#344155"
+        cellColor="#d7dae0"
+        sectionColor="#994b72"
         fadeDistance={70}
         infiniteGrid
       />
@@ -52,11 +54,18 @@ function Workspace() {
 }
 
 export default function App() {
+  const [enginePanelOpen, setEnginePanelOpen] = useState(false);
+
   return (
     <div className="app-layout">
-      <Sidebar />
+      <Sidebar
+        enginePanelOpen={enginePanelOpen}
+        onEngineClick={() => {
+          setEnginePanelOpen((previous) => !previous);
+        }}
+      />
 
-      <main className="workspace" aria-label="Rocket engine 3D workspace">
+      <main className="workspace" aria-label="3D workspace">
         <Canvas camera={{ position: [8, 6, 8], fov: 50 }}>
           <color attach="background" args={["#090B10"]} />
           <Workspace />
@@ -73,6 +82,10 @@ export default function App() {
           <span>Right drag: Pan</span>
         </div>
       </main>
+
+      {enginePanelOpen && (
+        <EnginePanel onClose={() => setEnginePanelOpen(false)} />
+      )}
     </div>
   );
 }

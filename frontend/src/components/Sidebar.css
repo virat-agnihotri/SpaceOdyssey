@@ -3,13 +3,14 @@
   flex-shrink: 0;
   height: 100dvh;
   padding: 28px 16px;
-  background: var(--panel, #131720);
-  border-right: 1px solid var(--border, #303949);
+  background: var(--panel, #0f1013);
+  border-right: 1px solid var(--border, #0d131f);
+  
 }
 
 .sidebar-brand {
   margin: 0 12px 36px;
-  color: var(--text, #f1f0eb);
+  color: var(--text, #b1981a);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 2px;

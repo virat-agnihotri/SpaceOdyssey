@@ -1,5 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { Grid, OrbitControls } from "@react-three/drei";
+import Sidebar from "./components/Sidebar";
 import "./App.css";
 
 function Workspace() {
@@ -13,9 +14,9 @@ function Workspace() {
       <mesh position={[0, 1, 0]}>
         <boxGeometry args={[2, 2, 2]} />
         <meshStandardMaterial
-          color="#38bdf8"
-          roughness={0.4}
-          metalness={0.3}
+          color="#D8DEE8"
+          roughness={0.45}
+          metalness={0.35}
         />
       </mesh>
 
@@ -25,10 +26,11 @@ function Workspace() {
         args={[20, 20]}
         cellSize={1}
         cellThickness={0.6}
-        cellColor="#283241"
         sectionSize={5}
         sectionThickness={1}
-        sectionColor="#526176"
+        
+        cellColor="#1A2230"
+        sectionColor="#344155"
         fadeDistance={70}
         infiniteGrid
       />
@@ -51,22 +53,26 @@ function Workspace() {
 
 export default function App() {
   return (
-    <main className="workspace">
-      <Canvas camera={{ position: [8, 6, 8], fov: 50 }}>
-        <color attach="background" args={["#080c14"]} />
-        <Workspace />
-      </Canvas>
+    <div className="app-layout">
+      <Sidebar />
 
-      <header className="workspace-heading">
-        <span className="status-dot" />
-        ROCKET MISSION · 3D WORKSPACE
-      </header>
+      <main className="workspace" aria-label="Rocket engine 3D workspace">
+        <Canvas camera={{ position: [8, 6, 8], fov: 50 }}>
+          <color attach="background" args={["#090B10"]} />
+          <Workspace />
+        </Canvas>
 
-      <div className="controls-guide">
-        <span>Left drag: Rotate</span>
-        <span>Scroll: Zoom</span>
-        <span>Right drag: Pan</span>
-      </div>
-    </main>
+        <header className="workspace-heading">
+          <span className="status-dot" />
+          ROCKET ENGINE · 3D WORKSPACE
+        </header>
+
+        <div className="controls-guide">
+          <span>Left drag: Rotate</span>
+          <span>Scroll: Zoom</span>
+          <span>Right drag: Pan</span>
+        </div>
+      </main>
+    </div>
   );
 }

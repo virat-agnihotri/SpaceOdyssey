@@ -1,9 +1,11 @@
 import { Canvas } from "@react-three/fiber";
 import { Grid, OrbitControls } from "@react-three/drei";
 import "./App.css";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { Model } from "./components/EngineViewer";
 import Sidebar from "./components/Sidebar";
 import EnginePanel from "./components/EnginePanel";
+
 
 function Workspace() {
   return (
@@ -12,15 +14,17 @@ function Workspace() {
       <ambientLight intensity={0.6} />
       <directionalLight position={[5, 8, 5]} intensity={2} />
 
+      
       {/* Temporary object: replace this with the rocket later */}
-      <mesh position={[0, 1, 0]}>
+      {/* <mesh position={[0, 1, 0]}>
         <boxGeometry args={[2, 2, 2]} />
         <meshStandardMaterial
           color="#D8DEE8"
           roughness={0.45}
           metalness={0.35}
         />
-      </mesh>
+      </mesh> */}
+      
 
       {/* Ground reference grid */}
       <Grid
@@ -66,10 +70,19 @@ export default function App() {
       />
 
       <main className="workspace" aria-label="3D workspace">
-        <Canvas camera={{ position: [8, 6, 8], fov: 50 }}>
-          <color attach="background" args={["#090B10"]} />
-          <Workspace />
-        </Canvas>
+      <Canvas camera={{ position: [8, 6, 8], fov: 50 }}>
+        <color attach="background" args={["#090B10"]} />
+
+        <Suspense fallback={null}>
+          <Model
+            modelPath="/models/Solid Rocket Booster.glb"
+            fitCamera={false}
+            height={5}
+          />
+        </Suspense>
+
+        <Workspace />
+      </Canvas>
 
         <header className="workspace-heading">
           <span className="status-dot" />

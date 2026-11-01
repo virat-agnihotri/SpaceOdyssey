@@ -8,15 +8,58 @@ import {
 } from "@react-three/drei";
 import * as THREE from "three";
 
-function Model({ modelPath }) {
+
+export function Model({
+  modelPath,
+  fitCamera = true,
+  height = 5,
+}) {
   const { scene } = useGLTF(modelPath);
 
-  // Clone so multiple viewers don't share the same scene object.
-  const model = useMemo(() => scene.clone(true), [scene]);
+  const model = useMemo(() => {
+    const group = new THREE.Group();
+    group.add(scene.clone(true));
+
+    // Measure the original model.
+    const box = new THREE.Box3().setFromObject(group);
+    const size = box.getSize(new THREE.Vector3());
+
+    // Turn its longest axis toward the vertical Y axis.
+    if (size.x > size.y && size.x >= size.z) {
+      group.rotation.z = Math.PI / 2;
+    } else if (size.z > size.y && size.z > size.x) {
+      group.rotation.x = -Math.PI / 2;
+    }
+
+    group.updateMatrixWorld(true);
+
+    // Measure again after rotating.
+    box.setFromObject(group);
+    box.getSize(size);
+
+    const center = box.getCenter(new THREE.Vector3());
+    const factor = height / Math.max(size.y, 0.000001);
+
+    // Resize, centre horizontally, and place the bottom on Y = 0.
+    group.scale.setScalar(factor);
+    group.position.set(
+      -center.x * factor,
+      -box.min.y * factor,
+      -center.z * factor
+    );
+
+    return group;
+  }, [scene, height]);
+
+  const rocket = <primitive object={model} />;
+
+  if (!fitCamera) {
+    return rocket;
+  }
 
   return (
     <Bounds fit clip observe margin={1.3}>
-      <primitive object={model} />
+      {rocket}
     </Bounds>
   );
 }
